@@ -11,7 +11,7 @@ class Beasiswa extends Model
 
     protected $fillable = [
         'mahasiswa_id',
-        'periode_id',
+        'period_id',
         'category_id',
         'ipk',
         'transkrip_akademik',
@@ -20,5 +20,17 @@ class Beasiswa extends Model
         'bukti_keaktifan',
         'dokumen_pendukung_lain'
     ];
+    public function period(){
+        return $this->belongsTo(Period::class);
+    }
+    public function category(){
+        return $this->belongsTo(KategoriBeasiswa::class);
+    }
+    public function mahasiswa(){
+        return $this->belongsTo(Mahasiswa::class);
+    }
+    public function pengajuanBeasiswa(){
+        return $this->hasOne(PengajuanBeasiswa::class,'beasiswa_id','id');
+    }
     use HasFactory;
 }

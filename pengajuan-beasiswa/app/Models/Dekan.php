@@ -11,7 +11,8 @@ class Dekan extends Model
 
     protected $fillable = [
         'fakultas_id',
-        'status'
+        'status',
+        'user_id'
     ];
     use HasFactory;
     public function user()

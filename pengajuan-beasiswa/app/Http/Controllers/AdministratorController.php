@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Beasiswa;
 use App\Models\Dekan;
 use App\Models\KategoriBeasiswa;
 use App\Models\KategoriFakultas;
@@ -82,38 +83,68 @@ class AdministratorController extends Controller
             'jurusan' => $jurusan,
         ]);
     }
-    public function listPeriod (){
-        $datas = Period::paginate(10);
-        return view('pages.administrator.period.list')->with([
-            'datas' => $datas,
-        ]);
-    }
-    public function createPeriod (){
-        return view('pages.administrator.period.create');
-    }
-    public function editPeriod ($id){
-        $data = Period::findOrFail($id);
-        return view('pages.administrator.period.edit')->with([
-            'data' => $data,
-        ]);
-    }
     public function listFakultas (){
-        $datas = KategoriFakultas::paginate(10);
+        $datas = KategoriFakultas::with(['dekan'])
+            ->paginate(10);
         return view('pages.administrator.fakultas.list')->with([
             'datas' => $datas,
         ]);
     }
 
     public function listJurusan (){
-        $datas = KategoriJurusan::paginate(10);
+        $datas = KategoriJurusan::with(['mahasiswa'])
+            ->paginate(10);
         return view('pages.administrator.jurusan.list')->with([
             'datas' => $datas,
         ]);
     }
     public function listBeasiswa (){
-        $datas = KategoriBeasiswa::paginate(10);
+        $datas = KategoriBeasiswa::with((['beasiswa']))
+            ->paginate(10);
         return view('pages.administrator.beasiswa.list')->with([
             'datas' => $datas,
         ]);
     }
+
+    public function listPengajuanBeasiswa (Request $request){
+        $periods = Period::all();
+        if($request->period){
+            $currentPeriod = Period::findOrFail($request->period);
+        } else{
+            $currentPeriod = $periods[0];
+        }
+
+        $dataBeasiswa = Beasiswa::whereHas('pengajuanBeasiswa',function($x){
+            return $x->where('isFinalized','=',false);
+        })
+        ->where('period_id','=',$currentPeriod->id)
+        ->paginate(10);
+
+        return view('pages.administrator.pengajuan-beasiswa.list')->with([
+            'periods' => $periods,
+            'currentPeriod' => $currentPeriod,
+            'dataBeasiswa' => $dataBeasiswa,
+        ]);
+    }
+
+    public function listFinalisasi (Request $request){
+        $periods = Period::all();
+        if($request->period){
+            $currentPeriod = Period::findOrFail($request->period);
+        } else{
+            $currentPeriod = $periods[0];
+        }
+
+        $dataBeasiswa = Beasiswa::whereHas('pengajuanBeasiswa',function($x){
+            return $x->where('isFinalized','=',true);
+        })
+        ->where('period_id','=',$currentPeriod->id)
+        ->paginate(10);
+        return view('pages.administrator.finalisasi.list')->with([
+            'periods' => $periods,
+            'currentPeriod' => $currentPeriod,
+            'dataBeasiswa' => $dataBeasiswa,
+        ]);
+    }
+
 }

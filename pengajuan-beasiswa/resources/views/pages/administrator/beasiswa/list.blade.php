@@ -55,7 +55,7 @@
             <tr>
                 <th scope="row">{{$loop->index + 1}}</th>
                 <td>{{$data->name}}</td>
-                <td>55</td>
+                <td>{{$data->beasiswa->count()}}</td>
                 <td>
                     <a data-bs-toggle="modal" data-bs-target="#editBeasiswa-{{$loop->index + 1}}" class="text-decoration-none text-black fa fa-edit"></a>
                     <!-- Modal -->

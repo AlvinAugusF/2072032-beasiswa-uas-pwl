@@ -57,4 +57,6 @@ class PeriodController extends Controller
         $period->delete();
         return back()->with(['status'=> 'success','message'=> 'Data period berhasil dihapus']);;
     }
+
+
 }

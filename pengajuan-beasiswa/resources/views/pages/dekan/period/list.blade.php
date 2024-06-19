@@ -35,7 +35,7 @@
             <td>{{$data->name}}</td>
             <td>{{$data->start_date}}</td>
             <td>{{$data->end_date}}</td>
-            <td>22</td>
+            <td>{{$data->beasiswa->count()}}</td>
             <td>
                 <a href="{{route('editPeriod',$data->id)}}" class="text-decoration-none text-black fa fa-edit"></a>
                 <button href="" data-bs-toggle="modal" data-bs-target="#data-{{$loop->index + 1}}" class="text-decoration-none text-black fa fa-trash border-0"></button>

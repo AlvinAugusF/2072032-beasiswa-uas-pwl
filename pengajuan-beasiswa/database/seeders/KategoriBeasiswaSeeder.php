@@ -16,8 +16,6 @@ class KategoriBeasiswaSeeder extends Seeder
         $data = [
             ['name' => 'Beasiswa Prestasi'],
             ['name' => 'Bantuan Ekonomi'],
-            ['name' => 'Bantuan Sekolah'],
-            ['name' => 'ASEAN 2024'],
         ];
 
         foreach ($data as $value) {

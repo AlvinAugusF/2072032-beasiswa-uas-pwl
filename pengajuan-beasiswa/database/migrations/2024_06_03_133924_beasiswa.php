@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('beasiswa', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('mahasiswa_id');
-            $table->foreign('mahasiswa_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('mahasiswa_id')->references('id')->on('mahasiswa')->onDelete('cascade');
             $table->unsignedBigInteger('period_id');
             $table->foreign('period_id')->references('id')->on('period')->onDelete('cascade');
             $table->unsignedBigInteger('category_id');

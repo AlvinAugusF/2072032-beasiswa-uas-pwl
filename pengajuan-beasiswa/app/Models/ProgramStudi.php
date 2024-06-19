@@ -10,7 +10,8 @@ class ProgramStudi extends Model
     protected $table = 'program_studi';
 
     protected $fillable = [
-        'program_studi_id'
+        'program_studi_id',
+        'user_id'
     ];
     public function user()
     {

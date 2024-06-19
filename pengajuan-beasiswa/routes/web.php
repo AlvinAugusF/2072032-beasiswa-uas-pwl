@@ -59,15 +59,6 @@ Route::middleware('auth')->group(function(){
                 Route::put('/edit/{id}', [ProgramStudiController::class,'edit'])->name('editPStudi');
                 Route::delete('/delete/{id}', [ProgramStudiController::class,'delete'])->name('deletePStudi');
             });
-            Route::prefix('period')->group(function(){
-                Route::get('/list', [AdministratorController::class,'listPeriod'])->name('listPeriod');
-                Route::get('/create', [AdministratorController::class,'createPeriod'])->name('createPeriod');
-                Route::get('/edit/{id}', [AdministratorController::class,'editPeriod'])->name('editPeriod');
-
-                Route::post('/create', [PeriodController::class,'create'])->name('createPeriod');
-                Route::put('/edit/{id}', [PeriodController::class,'edit'])->name('editPeriod');
-                Route::delete('/delete/{id}', [PeriodController::class,'delete'])->name('deletePeriod');
-            });
             Route::prefix('/fakultas')->group(function(){
                 Route::get('/list', [AdministratorController::class,'listFakultas'])->name('listFakultas');
 
@@ -82,28 +73,60 @@ Route::middleware('auth')->group(function(){
                 Route::put('/edit/{id}', [JurusanController::class,'edit'])->name('editJurusan');
                 Route::delete('/delete/{id}', [JurusanController::class,'delete'])->name('deleteJurusan');
             });
-            Route::prefix('/beasiswa')->group(function(){
+            Route::prefix('/kategori-beasiswa')->group(function(){
                 Route::get('/list', [AdministratorController::class,'listBeasiswa'])->name('listBeasiswa');
 
                 Route::post('/create', [BeasiswaController::class,'create'])->name('createBeasiswa');
                 Route::put('/edit/{id}', [BeasiswaController::class,'edit'])->name('editBeasiswa');
                 Route::delete('/delete/{id}', [BeasiswaController::class,'delete'])->name('deleteBeasiswa');
             });
+            Route::prefix('/pengajuan-beasiswa')->group(function(){
+                Route::get('/list', [AdministratorController::class,'listPengajuanBeasiswa'])->name('listPengajuanBeasiswa');
+
+            });
+            Route::prefix('/finalisasi')->group(function(){
+                Route::get('/list', [AdministratorController::class,'listFinalisasi'])->name('listFinalisasi');
+
+            });
         });
     });
     Route::middleware('mahasiswa')->group(function(){
         Route::prefix('mahasiswa')->group(function(){
-            Route::get('/', [MahasiswaController::class,'index']);
+            Route::get('/', [MahasiswaController::class,'index'])->name('mahasiswa/home');
+            Route::get('/ajuan-beasiswa/{periodId}',[MahasiswaController::class,'beasiswa'])->name('ajuanBeasiswa');
+            
+            Route::post('/ajuan-beasiswa/{periodId}',[BeasiswaController::class,'createDataBeasiswa'])->name('ajuanBeasiswa');
+            Route::put('/ajuan-beasiswa/edit/{type}/{id}',[BeasiswaController::class,'editPengajuanBeasiswa'])->name('editPengajuanBeasiswa');
+            Route::delete('/ajuan-beasiswa/delete/{id}',[BeasiswaController::class,'deleteBeasiswa'])->name('deleteBeasiswa');
         });
     });
     Route::middleware('dekan')->group(function(){
         Route::prefix('dekan')->group(function(){
-            Route::get('/', [DekanController::class,'index'])->name('main');
+            Route::get('/', [DekanController::class,'index'])->name('dekan/home');
+            Route::get('/review', [DekanController::class,'reviewPage'])->name('dekan/review');
+            Route::get('/finalisasi', [DekanController::class,'finalizePage'])->name('dekan/finalisasi');
+
+            Route::put('/review/{beasiswaId}', [DekanController::class,'reviewBeasiswa'])->name('dekanReviewBeasiswa');
+            Route::put('/review/finalize/{beasiswaId}', [DekanController::class,'finalize'])->name('finalize');
+        });
+        Route::prefix('period')->group(function(){
+            Route::get('/list', [DekanController::class,'listPeriod'])->name('listPeriod');
+            Route::get('/create', [DekanController::class,'createPeriod'])->name('createPeriod');
+            Route::get('/edit/{id}', [DekanController::class,'editPeriod'])->name('editPeriod');
+
+            Route::post('/create', [PeriodController::class,'create'])->name('createPeriod');
+            Route::put('/edit/{id}', [PeriodController::class,'edit'])->name('editPeriod');
+            Route::delete('/delete/{id}', [PeriodController::class,'delete'])->name('deletePeriod');
         });
     });
     Route::middleware('program_studi')->group(function(){
         Route::prefix('program-studi')->group(function(){
-            Route::get('/', [ProgramStudiController::class,'index'])->name('main');
+            Route::get('/', [ProgramStudiController::class,'index'])->name('program-studi/home');
+            Route::get('/review', [ProgramStudiController::class,'reviewPage'])->name('program-studi/review');
+            Route::get('/finalisasi', [ProgramStudiController::class,'finalizePage'])->name('program-studi/finalisasi');
+
+            Route::put('/review/{beasiswaId}', [ProgramStudiController::class,'reviewBeasiswa'])->name('programStudiReviewBeasiswa');
+
         });
     });
 });

@@ -14,5 +14,8 @@ class Period extends Model
         'start_date',
         'end_date',
     ];
+    public function beasiswa(){
+        return $this->hasMany(Beasiswa::class);
+    }
     use HasFactory;
 }

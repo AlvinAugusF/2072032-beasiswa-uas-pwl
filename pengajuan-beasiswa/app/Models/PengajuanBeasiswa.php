@@ -15,6 +15,20 @@ class PengajuanBeasiswa extends Model
         'dekan_id',
         'isApprovedByProgramStudi',
         'program_studi_id',
+        'dekan_notes',
+        'program_studi_notes',
+        'dekan_update_at',
+        'program_studi_update_at',
+        'isFinalized'
     ];
+        public function beasiswa(){
+            return $this->belongsTo(Beasiswa::class,'beassiwa_id','id');
+        }
+        public function dekan(){
+            return $this->belongsTo(Dekan::class);
+        }
+        public function programStudi(){
+            return $this->belongsTo(ProgramStudi::class);
+        }
     use HasFactory;
 }

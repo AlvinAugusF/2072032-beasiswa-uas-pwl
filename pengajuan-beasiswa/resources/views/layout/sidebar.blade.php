@@ -13,17 +13,12 @@
         </li>
         <li>
             <a href="{{route('listDekan')}}" class="nav-link {{Str::contains(url()->current(), 'dekan') ? "active" : "text-white"}}">
-              Akun Dekan
+              Akun Fakultas
             </a>
         </li>
         <li>
             <a href="{{route('listPStudi')}}" class="nav-link {{Str::contains(url()->current(), 'program-studi') ? "active" : "text-white"}}">
               Akun Program Studi
-            </a>
-        </li>
-        <li>
-            <a href="{{route('listPeriod')}}" class="nav-link {{Str::contains(url()->current(), 'period') ? "active" : "text-white"}}">
-              Periode
             </a>
         </li>
         <li>
@@ -37,14 +32,53 @@
             </a>
         </li>
         <li>
-            <a href="{{route('listBeasiswa')}}" class="nav-link {{Str::contains(url()->current(), 'beasiswa') ? "active" : "text-white"}}">
+            <a href="{{route('listBeasiswa')}}" class="nav-link {{Str::contains(url()->current(), 'kategori-beasiswa') ? "active" : "text-white"}}">
               Beasiswa
             </a>
         </li>
-        @else
-            
+        <li>
+          <a href="{{route('listPengajuanBeasiswa')}}" class="nav-link {{Str::contains(url()->current(), 'pengajuan-beasiswa') ? "active" : "text-white"}}">
+            Pengajuan Beasiswa
+          </a>
+        </li>
+        <li>
+          <a href="{{route('listFinalisasi')}}" class="nav-link {{Str::contains(url()->current(), 'finalisasi') ? "active" : "text-white"}}">
+            List Beasiswa Terfinalisasi
+          </a>
+        </li>
+        @elseif (auth()->user()->role_id == 2)
+        <li>
+          <a href="{{route('mahasiswa/home')}}" class="nav-link active">
+            Home
+            </a>
+        </li>
+        @elseif (auth()->user()->role_id == 3)
+        <li>
+          <a href="{{route('dekan/review')}}" class="nav-link {{Str::contains(url()->current(), 'review') ? "active" : "text-white"}}">
+            Review Beasiswa
+          </a>
+          <a href="{{route('dekan/finalisasi')}}" class="nav-link {{Str::contains(url()->current(), 'finalisasi') ? "active" : "text-white"}}">
+            List Beasiswa Terfinalisasi
+          </a>
+        </li>
+        <li>
+            <a href="{{route('listPeriod')}}" class="nav-link {{Str::contains(url()->current(), 'period') ? "active" : "text-white"}}">
+              Periode
+            </a>
+        </li>
+        @elseif (auth()->user()->role_id == 4)
+        <li>
+          <li>
+            <a href="{{route('program-studi/review')}}" class="nav-link {{Str::contains(url()->current(), 'review') ? "active" : "text-white"}}">
+              Review Beasiswa
+            </a>
+            <a href="{{route('program-studi/finalisasi')}}" class="nav-link {{Str::contains(url()->current(), 'finalisasi') ? "active" : "text-white"}}">
+              List Beasiswa Terfinalisasi
+            </a>
+          </li>
+        </li>
         @endif
-      
+
     </ul>
     <hr>
     <div class="text-center">

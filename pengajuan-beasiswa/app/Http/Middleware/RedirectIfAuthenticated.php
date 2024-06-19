@@ -21,7 +21,16 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                return redirect(RouteServiceProvider::HOME);
+                if(auth()->user()->getRole->name == "Administrator"){
+                    return redirect()->route('listMahasiswa');
+                } else if(auth()->user()->getRole->name == "Mahasiswa"){
+                    return redirect()->route('mahasiswa/home');
+                }else if(auth()->user()->getRole->name == "Dekan"){
+                    return redirect()->route('dekan/review');
+                }else if(auth()->user()->role_id == 4){
+                    return redirect()->route('program-studi/review');
+                }
+                // return redirect(RouteServiceProvider::HOME);
             }
         }
 

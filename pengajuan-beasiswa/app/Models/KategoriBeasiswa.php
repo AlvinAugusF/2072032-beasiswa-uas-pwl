@@ -12,5 +12,9 @@ class KategoriBeasiswa extends Model
     protected $fillable = [
         'name'
     ];
+    public function beasiswa()
+    {
+        return $this->hasMany(Beasiswa::class,'category_id','id');
+    }
     use HasFactory;
 }

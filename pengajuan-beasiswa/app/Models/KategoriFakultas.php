@@ -12,5 +12,9 @@ class KategoriFakultas extends Model
     protected $fillable = [
         'name'
     ];
+    public function dekan()
+    {
+        return $this->hasMany(Dekan::class,'fakultas_id','id');
+    }
     use HasFactory;
 }

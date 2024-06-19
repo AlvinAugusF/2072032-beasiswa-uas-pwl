@@ -2,16 +2,50 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Beasiswa;
+use App\Models\KategoriBeasiswa;
 use App\Models\Mahasiswa;
+use App\Models\Period;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class MahasiswaController extends Controller
 {
-    public function index (){
-        return view('pages.mahasiswa.main');
+    public function getMahasiswaByUserId($userId){
+        return Mahasiswa::where('user_id','=',$userId)->first();
+    }
+
+    public function index (Request $request){
+        $periods = Period::all();
+        if($request->period){
+            $currentPeriod = Period::findOrFail($request->period);
+        } else{
+            $currentPeriod = $periods[0];
+        }
+        $dataBeasiswa = Beasiswa::with(['pengajuanBeasiswa'])
+        ->where('mahasiswa_id','=',$this->getMahasiswaByUserId(auth()->user()->id)->id)
+        ->where('period_id', '=', $currentPeriod->id)
+        ->first();
+
+        $jenisBeasiswa = KategoriBeasiswa::all();
+        return view('pages.mahasiswa.main')->with([
+            'periods' => $periods,
+            'currentPeriod' => $currentPeriod,
+            'dataBeasiswa' => $dataBeasiswa,
+            'jenisBeasiswa' => $jenisBeasiswa,
+        ]);
+    }
+
+    public function beasiswa ($periodId){
+        $period = Period::findOrFail($periodId);
+        $jenisBeasiswa = KategoriBeasiswa::all();
+        return view('pages.beasiswa.create')->with([
+            'period' => $period,
+            'jenisBeasiswa' => $jenisBeasiswa,
+        ]);
     }
 
     public function create(Request $request){
@@ -75,4 +109,5 @@ class MahasiswaController extends Controller
         $user->delete();
         return redirect()->route('listMahasiswa')->with(['status' => 'success', 'title' => 'Delete Akun Mahasiswa','message' => 'Akun mahasiswa berhasil dihapus']);
     }
+
 }

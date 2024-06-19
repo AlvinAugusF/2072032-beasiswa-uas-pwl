@@ -12,5 +12,9 @@ class KategoriJurusan extends Model
     protected $fillable = [
         'name'
     ];
+    public function mahasiswa()
+    {
+        return $this->hasMany(Mahasiswa::class,'jurusan_id','id');
+    }
     use HasFactory;
 }

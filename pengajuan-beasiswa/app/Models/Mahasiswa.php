@@ -10,7 +10,8 @@ class Mahasiswa extends Model
     protected $table = 'mahasiswa';
 
     protected $fillable = [
-        'jurusan_id'
+        'jurusan_id',
+        'user_id'
     ];
     use HasFactory;
 
